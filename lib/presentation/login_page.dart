@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coofit/presentation/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
@@ -9,9 +10,10 @@ import '../style/style.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  static const routeName = "/login_page";
+
   @override
   State<StatefulWidget> createState() => _LoginPageState();
-
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -54,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.all(48.0),
             child: Column(
               children:  [
-                Image.asset("images/main_logo.jpg", height: 128, width: 128),
+                Image.asset("images/main_logo.jpg", height: 80, width: 80),
                 const SizedBox(height: 16),
                 const Text(
                   "Coofit",
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
-                const SizedBox(height: 64),
+                const SizedBox(height: 48),
                 TextField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: linkStyle,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-
+                            Navigator.pushReplacementNamed(context, RegisterPage.routeName);
                           }
                       )
                     ]

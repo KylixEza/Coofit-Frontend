@@ -1,4 +1,6 @@
 import 'package:coofit/presentation/login_page.dart';
+import 'package:coofit/presentation/register_page.dart';
+import 'package:coofit/style/style.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,8 +16,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Coofit',
       theme: ThemeData(
+        primaryColor: primaryColor,
+        accentColor: accentColor,
         primarySwatch: Colors.red,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: coofitTextTheme,
       ),
+      initialRoute: LoginPage.routeName,
+      routes: {
+        LoginPage.routeName: (context) => const LoginPage(),
+        RegisterPage.routeName: (context) => const RegisterPage()
+      },
       home: const LoginPage(),
     );
   }
