@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+
+import '../style/style.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -38,9 +42,12 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(vertical: 84 ),
+        margin: const EdgeInsets.symmetric(vertical: 32.0),
         child: Card(
           elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0)
+          ),
           shadowColor: Colors.grey,
           child: Container(
             width: 720,
@@ -84,6 +91,35 @@ class _LoginPageState extends State<LoginPage> {
                     });
                   },
                 ),
+                const SizedBox(height: 14),
+                GFButton(
+                  onPressed: () {
+
+                  },
+                  color: primaryColor,
+                  fullWidthButton: true,
+                  text: "Login",
+                  textStyle: coofitTextTheme.headline5?.merge(
+                    const TextStyle(color: Colors.white)
+                  )
+                ),
+                const SizedBox(height: 14),
+                RichText(
+                  text: TextSpan(
+                    style: defaultStyle,
+                    children: <TextSpan>[
+                      const TextSpan(text: 'Do not have any account? '),
+                      TextSpan(
+                        text: 'Register',
+                        style: linkStyle,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+
+                          }
+                      )
+                    ]
+                  ),
+                )
               ],
             ),
           ),
