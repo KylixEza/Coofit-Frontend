@@ -11,10 +11,10 @@ class RegisterPage extends StatefulWidget {
   static const routeName = "/register_page";
 
   @override
-  State<StatefulWidget> createState() => _RegisterState();
+  State<StatefulWidget> createState() => _RegisterPageState();
 }
 
-class _RegisterState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
   late TextEditingController _usernameController;
   String _username = "";
@@ -36,12 +36,18 @@ class _RegisterState extends State<RegisterPage> {
     super.initState();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
+    _emailController = TextEditingController();
+    _addressController = TextEditingController();
+    _phoneNumberController = TextEditingController();
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -88,7 +94,7 @@ class _RegisterState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 14),
                 TextField(
-                  controller: _passwordController,
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -101,7 +107,7 @@ class _RegisterState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 14),
                 TextField(
-                  controller: _usernameController,
+                  controller: _addressController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Address',
@@ -114,7 +120,7 @@ class _RegisterState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 14),
                 TextField(
-                  controller: _passwordController,
+                  controller: _phoneNumberController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Phone Number',

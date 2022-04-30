@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 14),
                 GFButton(
                   onPressed: () {
-
+                    Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
                   },
                   color: primaryColor,
                   fullWidthButton: true,
@@ -116,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: linkStyle,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushReplacementNamed(context, RegisterPage.routeName);
+                            Navigator.popAndPushNamed(context, RegisterPage.routeName);
                           }
                       )
                     ]

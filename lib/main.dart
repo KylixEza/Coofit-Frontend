@@ -1,4 +1,6 @@
+import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/login_page.dart';
+import 'package:coofit/presentation/prediction_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/style/style.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginPage.routeName,
       routes: {
         LoginPage.routeName: (context) => const LoginPage(),
-        RegisterPage.routeName: (context) => const RegisterPage()
+        RegisterPage.routeName: (context) => const RegisterPage(),
+        HomePage.routeName: (context) => const HomePage(),
+        PredictionPage.routeName: (context) => const PredictionPage(),
       },
       home: const LoginPage(),
     );
