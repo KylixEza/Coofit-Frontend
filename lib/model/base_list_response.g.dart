@@ -6,18 +6,24 @@ part of 'base_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseListResponse _$BaseListResponseFromJson(Map<String, dynamic> json) =>
-    BaseListResponse(
+BaseListResponse<T> _$BaseListResponseFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    BaseListResponse<T>(
       status: json['status'] as String,
       message: json['message'] as String,
       count: json['count'] as int,
-      data: json['data'],
+      data: fromJsonT(json['data']),
     );
 
-Map<String, dynamic> _$BaseListResponseToJson(BaseListResponse instance) =>
+Map<String, dynamic> _$BaseListResponseToJson<T>(
+  BaseListResponse<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
       'count': instance.count,
-      'data': instance.data,
+      'data': toJsonT(instance.data),
     };

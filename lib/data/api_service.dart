@@ -29,7 +29,7 @@ abstract class ApiService {
   Future<BaseResponse<UserResponse>> getUserDetail(@Path("uid") String uid);
 
   @PUT("user/{uid}")
-  Future<BaseResponse<String>> updateUser(@Path("uid") String uid);
+  Future<BaseResponse<String>> updateUser(@Path("uid") String uid, @Body() UserBody body);
 
   @POST("user/{uid}/favorite")
   Future<BaseResponse<String>> addNewFavorite(@Path("uid") uid, @Body() FavoriteBody body);
@@ -40,11 +40,11 @@ abstract class ApiService {
   @GET("user/{uid}/favorite")
   Future<BaseListResponse<List<MenuLiteResponse>>> getFavorites(@Path("uid") String uid);
 
-  @GET("menu")
-  Future<BaseListResponse<MenuLiteResponse>> getAllMenus();
-
   @GET("menu/top")
-  Future<BaseListResponse<MenuLiteResponse>> getTopMenus();
+  Future<BaseListResponse<List<MenuLiteResponse>>> getTopMenus();
+
+  @GET("menu")
+  Future<BaseListResponse<List<MenuLiteResponse>>> searchMenus(@Query("query") query);
 
   @GET("menu/{menuId}")
   Future<BaseResponse<MenuResponse>> getMenuDetail(@Path("menuId") String menuId);
