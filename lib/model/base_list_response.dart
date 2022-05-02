@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'base_list_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, genericArgumentFactories: true)
-class BaseListResponse<T> {
+class BaseListResponse<T> extends Equatable {
 
   final String status;
   final String message;
@@ -24,4 +25,7 @@ class BaseListResponse<T> {
 
   Map<String, dynamic> toJson(T Function(Object? json) toJsonT) =>
       _$BaseListResponseToJson(this, toJsonT);
+
+  @override
+  List<Object?> get props => [status, message, count, data];
 }

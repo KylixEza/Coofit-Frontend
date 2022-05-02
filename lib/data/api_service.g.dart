@@ -159,7 +159,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<BaseListResponse<List<MenuLiteResponse>>> getAllMenus() async {
+  Future<BaseListResponse<List<MenuLiteResponse>>> getTopMenus() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -167,7 +167,7 @@ class _ApiService implements ApiService {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BaseListResponse<List<MenuLiteResponse>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'menu',
+                .compose(_dio.options, 'menu/top',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseListResponse<List<MenuLiteResponse>>.fromJson(
@@ -190,28 +190,6 @@ class _ApiService implements ApiService {
         _setStreamType<BaseListResponse<List<MenuLiteResponse>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'menu',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseListResponse<List<MenuLiteResponse>>.fromJson(
-      _result.data!,
-      (json) => (json as List<dynamic>)
-          .map<MenuLiteResponse>(
-              (i) => MenuLiteResponse.fromJson(i as Map<String, dynamic>))
-          .toList(),
-    );
-    return value;
-  }
-
-  @override
-  Future<BaseListResponse<List<MenuLiteResponse>>> getTopMenus() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<BaseListResponse<List<MenuLiteResponse>>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'menu/top',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseListResponse<List<MenuLiteResponse>>.fromJson(

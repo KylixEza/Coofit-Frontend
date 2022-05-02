@@ -1,10 +1,11 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class UserResponse {
+class UserResponse extends Equatable {
 
   final String uid;
   final String username;
@@ -30,4 +31,8 @@ class UserResponse {
 
   factory UserResponse.fromJson(Map<String, dynamic> json) => _$UserResponseFromJson(json);
   Map<String, dynamic> toJson() => _$UserResponseToJson(this);
+
+  @override
+  List<Object?> get props => [uid, username, password, address, avatar, coofitWallet,
+    email, phoneNumber, xp];
 }

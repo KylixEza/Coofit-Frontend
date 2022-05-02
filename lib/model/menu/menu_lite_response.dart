@@ -1,14 +1,15 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'menu_lite_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class MenuLiteResponse {
+class MenuLiteResponse extends Equatable {
 
   final String menuId;
   final String difficulty;
   final int calories;
-  final int cooTime;
+  final int cookTime;
   final String image;
   final double rating;
   final String title;
@@ -17,7 +18,7 @@ class MenuLiteResponse {
     required this.menuId,
     required this.difficulty,
     required this.calories,
-    required this.cooTime,
+    required this.cookTime,
     required this.image,
     required this.rating,
     required this.title
@@ -27,4 +28,7 @@ class MenuLiteResponse {
     _$MenuLiteResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$MenuLiteResponseToJson(this);
+
+  @override
+  List<Object?> get props => [menuId, difficulty, calories, cookTime, image, rating, title];
 }
