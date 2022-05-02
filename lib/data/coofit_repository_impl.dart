@@ -1,4 +1,5 @@
 import 'package:coofit/data/api_service.dart';
+import 'package:coofit/data/preference_helper.dart';
 import 'package:coofit/model/favorite/favorite_body.dart';
 import 'package:coofit/model/login/login_body.dart';
 import 'package:coofit/model/login/login_response.dart';
@@ -14,11 +15,11 @@ import '../common/failure.dart';
 abstract class CoofitRepository {
   Future<Either<Failure, String>> addNewUser(UserBody body);
   Future<Either<Failure, LoginResponse>> getLoginInformation(LoginBody body);
-  Future<Either<Failure, UserResponse>> getUserDetail(String uid);
-  Future<Either<Failure, String>> updateUser(String uid, UserBody body);
-  Future<Either<Failure, String>> addNewFavorite(String uid, FavoriteBody body);
-  Future<Either<Failure, String>> deleteFavorite(String uid, FavoriteBody body);
-  Future<Either<Failure, List<MenuLiteResponse>>> getFavorites(String uid);
+  Future<Either<Failure, UserResponse>> getUserDetail();
+  Future<Either<Failure, String>> updateUser(UserBody body);
+  Future<Either<Failure, String>> addNewFavorite(FavoriteBody body);
+  Future<Either<Failure, String>> deleteFavorite(FavoriteBody body);
+  Future<Either<Failure, List<MenuLiteResponse>>> getFavorites();
   Future<Either<Failure, List<MenuLiteResponse>>> getTopMenus();
   Future<Either<Failure, List<MenuLiteResponse>>> searchMenus(String query);
   Future<Either<Failure, MenuResponse>> getMenuDetail(String menuId);
@@ -28,9 +29,11 @@ abstract class CoofitRepository {
 class CoofitRepositoryImpl extends CoofitRepository {
 
   final ApiService apiService;
+  final PreferenceHelper preference;
 
   CoofitRepositoryImpl({
-    required this.apiService
+    required this.apiService,
+    required this.preference,
   });
 
   @override
@@ -54,6 +57,7 @@ class CoofitRepositoryImpl extends CoofitRepository {
       final response = await apiService.getLoginInformation(body);
       if (response.status == "200") {
         final data = response.data;
+        preference.setUid(data.uid);
         return Right(data);
       } else {
         throw ServerFailure(response.message);
@@ -64,8 +68,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, UserResponse>> getUserDetail(String uid) async {
+  Future<Either<Failure, UserResponse>> getUserDetail() async {
     try {
+      final uid = await preference.getUid();
       final response = await apiService.getUserDetail(uid);
       if (response.status == "200") {
         final data = response.data;
@@ -79,8 +84,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, String>> updateUser(String uid, UserBody body) async {
+  Future<Either<Failure, String>> updateUser(UserBody body) async {
     try {
+      final uid = await preference.getUid();
       final response = await apiService.updateUser(uid, body);
       if (response.status == "200")  {
         final data = response.data;
@@ -94,8 +100,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, String>> addNewFavorite(String uid, FavoriteBody body) async {
+  Future<Either<Failure, String>> addNewFavorite(FavoriteBody body) async {
     try {
+      final uid = await preference.getUid();
       final response = await apiService.addNewFavorite(uid, body);
       if (response.status == "200") {
         final data = response.data;
@@ -109,8 +116,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, String>> deleteFavorite(String uid, FavoriteBody body) async {
+  Future<Either<Failure, String>> deleteFavorite(FavoriteBody body) async {
     try {
+      final uid = await preference.getUid();
       final response = await apiService.deleteFavorite(uid, body);
       if (response.status == "200") {
         final data = response.data;
@@ -124,8 +132,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, List<MenuLiteResponse>>> getFavorites(String uid) async {
+  Future<Either<Failure, List<MenuLiteResponse>>> getFavorites() async {
     try {
+      final uid = await preference.getUid();
       final response = await apiService.getFavorites(uid);
       if (response.status == "200") {
         final data = response.data;
