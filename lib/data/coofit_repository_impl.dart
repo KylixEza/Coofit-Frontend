@@ -15,6 +15,7 @@ import '../common/failure.dart';
 abstract class CoofitRepository {
   Future<Either<Failure, String>> addNewUser(UserBody body);
   Future<Either<Failure, LoginResponse>> getLoginInformation(LoginBody body);
+  void logout();
   Future<Either<Failure, UserResponse>> getUserDetail();
   Future<Either<Failure, String>> updateUser(UserBody body);
   Future<Either<Failure, String>> addNewFavorite(FavoriteBody body);
@@ -65,6 +66,11 @@ class CoofitRepositoryImpl extends CoofitRepository {
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
+  }
+
+  @override
+  void logout() {
+    preference.removeUid();
   }
 
   @override

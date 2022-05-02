@@ -17,4 +17,9 @@ class PreferenceHelper {
     final prefs = await sharedPreference;
     prefs.setString(UID, uid);
   }
+
+  void removeUid() async {
+    final prefs = await sharedPreference;
+    prefs.remove(UID);
+  }
 }
