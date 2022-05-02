@@ -58,7 +58,9 @@ class CoofitRepositoryImpl extends CoofitRepository {
       final response = await apiService.getLoginInformation(body);
       if (response.status == "200") {
         final data = response.data;
-        preference.setUid(data.uid);
+        if (data.isExist) {
+          preference.setUid(data.uid);
+        }
         return Right(data);
       } else {
         throw ServerFailure(response.message);
