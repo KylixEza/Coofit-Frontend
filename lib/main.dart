@@ -4,8 +4,10 @@ import 'package:coofit/presentation/prediction_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:coofit/di/injection.dart' as di;
 
 void main() {
+  di.initInjection();
   runApp(const MyApp());
 }
 
