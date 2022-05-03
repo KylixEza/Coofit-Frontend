@@ -1,5 +1,7 @@
 import 'package:coofit/data/coofit_repository_impl.dart';
 import 'package:coofit/data/preference_helper.dart';
+import 'package:coofit/provider/login_provider.dart';
+import 'package:coofit/provider/register_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +13,16 @@ final locator = GetIt.instance;
 void initInjection() {
   _dataSourcesLocator();
   _repositoryLocator();
+  _providerLocator();
+}
+
+void _providerLocator() {
+  locator.registerFactory(
+    () => LoginProvider(repository: locator())
+  );
+  locator.registerFactory(
+    () => RegisterProvider(repository: locator())
+  );
 }
 
 void _dataSourcesLocator() {
