@@ -1,1 +1,1 @@
-enum RequestState { Empty, Loading, Success, Error }
+enum RequestState { Default, Empty, Loading, Success, Error }

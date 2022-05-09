@@ -13,7 +13,7 @@ MenuLiteResponse _$MenuLiteResponseFromJson(Map<String, dynamic> json) =>
       calories: json['calories'] as int,
       cookTime: json['cook_time'] as int,
       image: json['image'] as String,
-      rating: (json['rating'] as num).toDouble(),
+      rating: (json['rating'] as num?)?.toDouble(),
       title: json['title'] as String,
     );
 

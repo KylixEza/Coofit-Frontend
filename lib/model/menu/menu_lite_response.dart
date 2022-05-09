@@ -11,7 +11,7 @@ class MenuLiteResponse extends Equatable {
   final int calories;
   final int cookTime;
   final String image;
-  final double rating;
+  double? rating = 0;
   final String title;
 
   MenuLiteResponse({

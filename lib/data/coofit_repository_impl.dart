@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:coofit/data/api_service.dart';
 import 'package:coofit/data/preference_helper.dart';
 import 'package:coofit/model/favorite/favorite_body.dart';
@@ -56,8 +58,10 @@ class CoofitRepositoryImpl extends CoofitRepository {
   Future<Either<Failure, LoginResponse>> getLoginInformation(LoginBody body) async {
     try {
       final response = await apiService.getLoginInformation(body);
+      print(response);
       if (response.status == "200") {
         final data = response.data;
+        print(data);
         if (data.isExist) {
           preference.setUid(data.uid);
         }

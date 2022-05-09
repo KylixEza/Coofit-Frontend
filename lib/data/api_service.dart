@@ -14,14 +14,14 @@ import '../model/login/login_response.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "http://localhost:8080/")
+@RestApi(baseUrl: "https://api-pemweb-coofit-v2.herokuapp.com/")
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
   @POST("user")
   Future<BaseResponse<String>> addNewUser(@Body() UserBody body);
 
-  @GET("user/login")
+  @POST("user/login")
   Future<BaseResponse<LoginResponse>> getLoginInformation(
     @Body() LoginBody body);
 

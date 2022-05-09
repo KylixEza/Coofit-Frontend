@@ -1,5 +1,12 @@
+import 'package:coofit/common/state_enum.dart';
+import 'package:coofit/model/menu/menu_lite_response.dart';
+import 'package:coofit/presentation/detail_page.dart';
 import 'package:coofit/presentation/prediction_page.dart';
+import 'package:coofit/provider/home_provider.dart';
+import 'package:coofit/widgets/custom_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,21 +18,6 @@ class HomePage extends StatefulWidget {
 
 }
 class _HomePageState extends State<HomePage> {
-
-  String query = '';
-  late TextEditingController _searchController;
-
-  @override
-  void initState() {
-    _searchController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,29 +36,57 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 48.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _searchController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: 'Find your favorite restaurant or menu',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              onChanged: (String s) {
-                setState(() {
-                  query = s;
-                  //value.fetchAllSearchRestaurant(query);
-                });
+      body: buildList(context)
+    );
+  }
+
+  Widget buildList(BuildContext context) {
+    return Consumer<HomeProvider>(
+      builder: (context, value, child) {
+        if (value.state == RequestState.Loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (value.state == RequestState.Success) {
+          final List<MenuLiteResponse>? menus = value.menus;
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 36,
+              horizontal:18
+            ),
+            child: MasonryGridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 16,
+              itemCount: menus?.length,
+              itemBuilder: (context, index) {
+                return _buildListItem(context,menus!.elementAt(index));
               },
             ),
-          ],
-        ),
-      ),
+          );
+        } else if (value.state == RequestState.Error) {
+          return Center(
+            child: Text(
+              value.message
+            ),
+          );
+        } else if (value.state == RequestState.Default) {
+          return Container();
+        } else if (value.state == RequestState.Empty) {
+          return Center(child: Text(value.message));
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, MenuLiteResponse menu) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, DetailPage.routeName, arguments: menu.menuId);
+      },
+      child: MenuLiteResponseListWidget(menu: menu),
     );
   }
 }

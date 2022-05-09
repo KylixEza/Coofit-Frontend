@@ -22,10 +22,12 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
 
     final result = await repository.getLoginInformation(loginBody);
+
     result.fold(
       (failure) {
         _message = failure.message;
         _state = RequestState.Error;
+        print(_message);
         notifyListeners();
       },
       (data) {

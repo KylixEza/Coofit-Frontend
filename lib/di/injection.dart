@@ -1,5 +1,6 @@
 import 'package:coofit/data/coofit_repository_impl.dart';
 import 'package:coofit/data/preference_helper.dart';
+import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/provider/login_provider.dart';
 import 'package:coofit/provider/register_provider.dart';
 import 'package:dio/dio.dart';
@@ -23,11 +24,14 @@ void _providerLocator() {
   locator.registerFactory(
     () => RegisterProvider(repository: locator())
   );
+  locator.registerFactory(
+    () => HomeProvider(repository: locator())
+  );
 }
 
 void _dataSourcesLocator() {
   locator.registerLazySingleton(
-          () => ApiService(Dio(BaseOptions(contentType: "application/json"))));
+          () => ApiService(Dio()));
   locator.registerLazySingleton(
           () => PreferenceHelper(sharedPreference: SharedPreferences.getInstance()));
 }
