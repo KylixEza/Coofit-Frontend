@@ -1,6 +1,6 @@
 import 'package:coofit/data/coofit_repository_impl.dart';
 import 'package:coofit/model/menu/menu_lite_response.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../common/state_enum.dart';
 

@@ -1,3 +1,4 @@
+import 'package:coofit/presentation/detail_page.dart';
 import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/login_page.dart';
 import 'package:coofit/presentation/prediction_page.dart';
@@ -34,14 +35,15 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: coofitTextTheme,
         ),
-        initialRoute: LoginPage.routeName,
+        initialRoute: HomePage.routeName,
         routes: {
           LoginPage.routeName: (context) => const LoginPage(),
           RegisterPage.routeName: (context) => const RegisterPage(),
           HomePage.routeName: (context) => const HomePage(),
+          DetailPage.routeName: (context) => const DetailPage(),
           PredictionPage.routeName: (context) => const PredictionPage(),
         },
-        home: const LoginPage(),
+        home: const HomePage(),
       ),
     );
   }

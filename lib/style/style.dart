@@ -26,7 +26,7 @@ final TextTheme coofitTextTheme = TextTheme(
   subtitle2: GoogleFonts.poppins(
       fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.1),
   bodyText1: GoogleFonts.poppins(
-      fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+      fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.5, color: Colors.black),
   bodyText2: GoogleFonts.poppins(
       fontSize: 14, fontWeight: FontWeight.w300, letterSpacing: 0.25),
   button: GoogleFonts.poppins(
