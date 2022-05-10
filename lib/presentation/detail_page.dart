@@ -5,17 +5,32 @@ import 'package:coofit/provider/detail_provider.dart';
 import 'package:coofit/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
 
   static const routeName = '/detail_page';
+  final String menuId;
+
+  const DetailPage({Key? key, required this.menuId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => DetailPageState();
 }
 
 class DetailPageState extends State<DetailPage> {
+
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<DetailProvider>(context, listen: false)
+          .getMenuDetail(widget.menuId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +42,12 @@ class DetailPageState extends State<DetailPage> {
               case RequestState.Success: {
                 return Row(
                   children: [
-                    //description, steps, & ingredients
-                    _buildMenuDetail(value.menu),
-                    //video player & review
-                    _buildMenuSupport()
+                    Expanded(
+                      child: _buildMenuDetail(value.menu),
+                    ),
+                    Expanded(
+                      child: _buildMenuSupport(),
+                    )
                   ],
                 );
               }
@@ -59,6 +76,7 @@ class DetailPageState extends State<DetailPage> {
 
   Widget _buildMenuDetail(MenuResponse menu) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Description',
@@ -74,6 +92,7 @@ class DetailPageState extends State<DetailPage> {
           'Ingredients',
           style: coofitTextTheme.bodyText1,
         ),
+        const SizedBox(height: 4.0),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -81,6 +100,11 @@ class DetailPageState extends State<DetailPage> {
           itemBuilder: (context, index) {
             return _buildIngredientsItem(menu.ingredients[index]);
           },
+        ),
+        const SizedBox(height: 24.0),
+        Text(
+          'Steps',
+          style: coofitTextTheme.bodyText1,
         ),
         const SizedBox(height: 4.0),
         ListView.builder(
