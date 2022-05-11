@@ -3,6 +3,7 @@ import 'package:coofit/data/preference_helper.dart';
 import 'package:coofit/provider/detail_provider.dart';
 import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/provider/login_provider.dart';
+import 'package:coofit/provider/prediction_provider.dart';
 import 'package:coofit/provider/register_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -30,6 +31,9 @@ void _providerLocator() {
   );
   locator.registerFactory(
     () => DetailProvider(repository: locator())
+  );
+  locator.registerFactory(
+    () => PredictionProvider(repository: locator())
   );
 }
 

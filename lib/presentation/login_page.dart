@@ -5,6 +5,7 @@ import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/login_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:provider/provider.dart';
@@ -52,35 +53,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginProcess() {
     return Consumer<LoginProvider>(
         builder: (context, data, child) {
-          final _loadingDialog = SimpleFontelicoProgressDialog(
-              context: context,
-              barrierDimisable: false
-          );
           if (data.state == RequestState.Loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (data.state == RequestState.Success) {
             if (data.isExist) {
-              Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+             SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+               Navigator.pushReplacementNamed(context, HomePage.routeName);
+             });
+             return Container();
             } else {
-              showAnimatedDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return ClassicGeneralDialogWidget(
-                      titleText: 'Login Failed!',
-                      contentText: 'Username or password is wrong',
-                      positiveText: 'OK',
-                      onPositiveClick: () {
-                        Navigator.of(context).pop();
-                      },
-                    );
-                  },
-                  animationType: DialogTransitionType.scale,
-                  duration: const Duration(seconds: 1)
-              );
+              return const Center(child: Text('User Not Found :('));
             }
           } else if (data.state == RequestState.Error) {
-            _loadingDialog.hide();
             return Center(child: Text(data.message));
           } else {
             return Card(
@@ -170,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           }
-          return Container();
         }
     );
   }

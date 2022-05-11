@@ -7,6 +7,7 @@ import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/detail_provider.dart';
 import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/provider/login_provider.dart';
+import 'package:coofit/provider/prediction_provider.dart';
 import 'package:coofit/style/style.dart';
 import 'package:coofit/utils/route_observer.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.locator<LoginProvider>()),
         ChangeNotifierProvider(create: (_) => di.locator<HomeProvider>()),
         ChangeNotifierProvider(create: (_) => di.locator<DetailProvider>()),
+        ChangeNotifierProvider(create: (_) => di.locator<PredictionProvider>()),
       ],
       child: MaterialApp(
         title: 'Coofit',
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: coofitTextTheme,
         ),
-        home: const HomePage(),
+        home: const LoginPage(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch(settings.name) {

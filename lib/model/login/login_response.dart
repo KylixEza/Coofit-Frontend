@@ -5,8 +5,8 @@ part 'login_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class LoginResponse extends Equatable {
-  final bool isExist;
-  final String uid;
+  bool isExist = false;
+  String uid = '';
 
   LoginResponse({
     required this.isExist,
