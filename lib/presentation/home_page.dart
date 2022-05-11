@@ -19,6 +19,21 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage> {
 
+  String query = '';
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +51,50 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
         ],
       ),
-      body: _buildList(context)
+      body: _buildPage(context)
+    );
+  }
+
+  Widget _buildPage(BuildContext context) {
+    return Consumer<HomeProvider>(
+        builder: (context, value, _) {
+          return Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 24
+                ),
+                child: TextField(
+                  controller: _controller,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: 'Find your favorite restaurant or menu',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onChanged: (String s) {
+                    setState(() {
+                      query = s;
+                      if (query.isEmpty) {
+                        value.getTopMenus();
+                      } else {
+                        value.searchMenu(query);
+                      }
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: _buildList(context),
+                ),
+              ),
+            ],
+          );
+        }
     );
   }
 

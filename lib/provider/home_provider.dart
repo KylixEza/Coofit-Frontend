@@ -45,4 +45,24 @@ class HomeProvider extends ChangeNotifier {
       }
     );
   }
+
+  Future<void> searchMenu(String q) async {
+    _state = RequestState.Loading;
+    notifyListeners();
+
+    final result = await repository.searchMenus(q);
+
+    result.fold(
+      (failure) {
+        _message = failure.message;
+        _state = RequestState.Error;
+        notifyListeners();
+      },
+      (data) {
+        _menus = data;
+        _state = RequestState.Success;
+        notifyListeners();
+      }
+    );
+  }
 }

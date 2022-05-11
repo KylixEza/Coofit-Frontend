@@ -183,7 +183,7 @@ class _ApiService implements ApiService {
   @override
   Future<BaseListResponse<List<MenuLiteResponse>>> searchMenus(query) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'query': query.toJson()};
+    final queryParameters = <String, dynamic>{r'query': query};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

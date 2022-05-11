@@ -44,7 +44,7 @@ abstract class ApiService {
   Future<BaseListResponse<List<MenuLiteResponse>>> getTopMenus();
 
   @GET("menu")
-  Future<BaseListResponse<List<MenuLiteResponse>>> searchMenus(@Query("query") query);
+  Future<BaseListResponse<List<MenuLiteResponse>>> searchMenus(@Query("query") String query);
 
   @GET("menu/{menuId}")
   Future<BaseResponse<MenuResponse>> getMenuDetail(@Path("menuId") String menuId);
