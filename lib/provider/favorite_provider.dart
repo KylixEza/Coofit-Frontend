@@ -7,7 +7,9 @@ class FavoriteProvider extends ChangeNotifier {
 
   final CoofitRepository repository;
 
-  FavoriteProvider({required this.repository});
+  FavoriteProvider({required this.repository}) {
+    getFavorites();
+  }
 
   RequestState _state = RequestState.Default;
   RequestState get state => _state;

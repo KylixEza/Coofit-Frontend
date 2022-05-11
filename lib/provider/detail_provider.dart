@@ -1,5 +1,6 @@
 import 'package:coofit/common/state_enum.dart';
 import 'package:coofit/data/coofit_repository_impl.dart';
+import 'package:coofit/model/favorite/favorite_body.dart';
 import 'package:coofit/model/menu/menu_response.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,46 @@ class DetailProvider extends ChangeNotifier {
           _state = RequestState.Success;
           notifyListeners();
         }
+    );
+  }
+
+  Future<void> addNewFavorites(FavoriteBody body) async {
+    _state = RequestState.Loading;
+    notifyListeners();
+
+    final result = await repository.addNewFavorite(body);
+
+    result.fold(
+      (failure) {
+        _message = failure.message;
+        _state = RequestState.Error;
+        notifyListeners();
+      },
+      (data) {
+        _message = data;
+        _state = RequestState.Success;
+        notifyListeners();
+      }
+    );
+  }
+
+  Future<void> deleteFavorite(FavoriteBody body) async {
+    _state = RequestState.Loading;
+    notifyListeners();
+
+    final result = await repository.deleteFavorite(body);
+
+    result.fold(
+      (failure) {
+        _message = failure.message;
+        _state = RequestState.Error;
+        notifyListeners();
+      },
+      (data) {
+        _message = data;
+        _state = RequestState.Success;
+        notifyListeners();
+      }
     );
   }
 }
