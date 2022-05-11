@@ -22,6 +22,7 @@ MenuResponse _$MenuResponseFromJson(Map<String, dynamic> json) => MenuResponse(
           .toList(),
       steps: (json['steps'] as List<dynamic>).map((e) => e as String).toList(),
       title: json['title'] as String,
+      videoUrl: json['video_url'] as String,
     );
 
 Map<String, dynamic> _$MenuResponseToJson(MenuResponse instance) =>
@@ -37,4 +38,5 @@ Map<String, dynamic> _$MenuResponseToJson(MenuResponse instance) =>
       'reviews': instance.reviews,
       'steps': instance.steps,
       'title': instance.title,
+      'video_url': instance.videoUrl,
     };

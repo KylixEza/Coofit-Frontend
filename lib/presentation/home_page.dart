@@ -36,48 +36,48 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
         ],
       ),
-      body: buildList(context)
+      body: _buildList(context)
     );
   }
 
-  Widget buildList(BuildContext context) {
+  Widget _buildList(BuildContext context) {
     return Consumer<HomeProvider>(
-      builder: (context, value, child) {
-        if (value.state == RequestState.Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (value.state == RequestState.Success) {
-          final List<MenuLiteResponse>? menus = value.menus;
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 36,
-              horizontal:18
-            ),
-            child: MasonryGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 16,
-              itemCount: menus?.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(context,menus!.elementAt(index));
-              },
-            ),
-          );
-        } else if (value.state == RequestState.Error) {
-          return Center(
-            child: Text(
-              value.message
-            ),
-          );
-        } else if (value.state == RequestState.Default) {
-          return Container();
-        } else if (value.state == RequestState.Empty) {
-          return Center(child: Text(value.message));
-        } else {
-          return Container();
-        }
-      },
+        builder: (context, value, child) {
+          if (value.state == RequestState.Loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (value.state == RequestState.Success) {
+            final List<MenuLiteResponse>? menus = value.menus;
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 36,
+                  horizontal:18
+              ),
+              child: MasonryGridView.count(
+                crossAxisCount: 4,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 16,
+                itemCount: menus?.length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(context,menus!.elementAt(index));
+                },
+              ),
+            );
+          } else if (value.state == RequestState.Error) {
+            return Center(
+              child: Text(
+                  value.message
+              ),
+            );
+          } else if (value.state == RequestState.Default) {
+            return Container();
+          } else if (value.state == RequestState.Empty) {
+            return Center(child: Text(value.message));
+          } else {
+            return Container();
+          }
+        },
     );
   }
 

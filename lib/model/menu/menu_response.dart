@@ -19,6 +19,7 @@ class MenuResponse extends Equatable{
   final List<ReviewResponse> reviews;
   final List<String> steps;
   final String title;
+  final String videoUrl;
 
   MenuResponse({
     required this.menuId,
@@ -32,6 +33,7 @@ class MenuResponse extends Equatable{
     required this.reviews,
     required this.steps,
     required this.title,
+    required this.videoUrl
   });
 
   factory MenuResponse.fromJson(Map<String, dynamic> json) => _$MenuResponseFromJson(json);
