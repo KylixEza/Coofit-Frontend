@@ -3,6 +3,8 @@ import 'package:coofit/data/coofit_repository_impl.dart';
 import 'package:coofit/model/menu/menu_lite_response.dart';
 import 'package:flutter/material.dart';
 
+import '../model/favorite/favorite_body.dart';
+
 class FavoriteProvider extends ChangeNotifier {
 
   final CoofitRepository repository;
@@ -19,6 +21,9 @@ class FavoriteProvider extends ChangeNotifier {
 
   String _message = '';
   String get message => _message;
+
+  bool _isFavorite = false;
+  bool get isFavorite => _isFavorite;
 
   Future<void> getFavorites() async {
     _state = RequestState.Loading;
@@ -43,6 +48,38 @@ class FavoriteProvider extends ChangeNotifier {
           notifyListeners();
         }
       }
+    );
+  }
+
+  void addNewFavorites(FavoriteBody body) async {
+    final result = await repository.addNewFavorite(body);
+
+    result.fold(
+            (failure) {
+          _message = failure.message;
+          notifyListeners();
+        },
+            (data) {
+          _message = data;
+          _isFavorite = true;
+          notifyListeners();
+        }
+    );
+  }
+
+  void deleteFavorite(FavoriteBody body) async {
+    final result = await repository.deleteFavorite(body);
+
+    result.fold(
+            (failure) {
+          _message = failure.message;
+          notifyListeners();
+        },
+            (data) {
+          _message = data;
+          _isFavorite = false;
+          notifyListeners();
+        }
     );
   }
 }

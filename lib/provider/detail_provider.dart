@@ -19,6 +19,9 @@ class DetailProvider extends ChangeNotifier {
   String _message = '';
   String get message => _message;
 
+  bool _isFavorite = false;
+  bool get isFavorite => _isFavorite;
+
   Future<void> getMenuDetail(String menuId) async {
     _state = RequestState.Loading;
     notifyListeners();
@@ -38,41 +41,33 @@ class DetailProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> addNewFavorites(FavoriteBody body) async {
-    _state = RequestState.Loading;
-    notifyListeners();
-
+  void addNewFavorites(FavoriteBody body) async {
     final result = await repository.addNewFavorite(body);
 
     result.fold(
       (failure) {
         _message = failure.message;
-        _state = RequestState.Error;
         notifyListeners();
       },
       (data) {
         _message = data;
-        _state = RequestState.Success;
+        _isFavorite = true;
         notifyListeners();
       }
     );
   }
 
-  Future<void> deleteFavorite(FavoriteBody body) async {
-    _state = RequestState.Loading;
-    notifyListeners();
-
+  void deleteFavorite(FavoriteBody body) async {
     final result = await repository.deleteFavorite(body);
 
     result.fold(
       (failure) {
         _message = failure.message;
-        _state = RequestState.Error;
         notifyListeners();
       },
       (data) {
         _message = data;
-        _state = RequestState.Success;
+        _isFavorite = false;
         notifyListeners();
       }
     );

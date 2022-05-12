@@ -5,20 +5,48 @@ import 'package:provider/provider.dart';
 
 import '../common/state_enum.dart';
 import '../model/menu/menu_lite_response.dart';
+import '../utils/route_observer.dart';
 import '../widgets/custom_widget.dart';
 import 'detail_page.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
 
   static const routeName = '/favorite_page';
 
   const FavoritePage({Key? key}) : super(key: key);
 
   @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> with RouteAware  {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildPage(context),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() {
+      Provider.of<FavoriteProvider>(context, listen: false)
+          .getFavorites();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    Provider.of<FavoriteProvider>(context, listen: false)
+        .getFavorites();
   }
 
   Widget _buildPage(BuildContext context) {
@@ -69,5 +97,11 @@ class FavoritePage extends StatelessWidget {
       },
       child: MenuLiteResponseListWidget(menu: menu),
     );
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }

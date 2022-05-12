@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_body.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class UserBody extends Equatable {
+class UserBody {
 
   final String username;
   final String password;
@@ -29,8 +29,4 @@ class UserBody extends Equatable {
 
   factory UserBody.fromJson(Map<String, dynamic> json) => _$UserBodyFromJson(json);
   Map<String, dynamic> toJson() => _$UserBodyToJson(this);
-
-  @override
-  List<Object?> get props => [username, password, address, avatar, coofitWallet,
-    email, phoneNumber, xp];
 }

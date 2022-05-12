@@ -1,8 +1,9 @@
-
 import 'package:coofit/common/state_enum.dart';
+import 'package:coofit/model/favorite/favorite_body.dart';
 import 'package:coofit/model/menu/menu_response.dart';
 import 'package:coofit/model/review/review_response.dart';
 import 'package:coofit/provider/detail_provider.dart';
+import 'package:coofit/provider/favorite_provider.dart';
 import 'package:coofit/style/style.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
@@ -55,27 +56,23 @@ class DetailPageState extends State<DetailPage> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildMenuSupport(value.menu),
+                      child: _buildMenuSupport(),
                     )
                   ],
                 );
               }
               case RequestState.Default:
                 return Container();
-                break;
               case RequestState.Empty:
                 return Container();
-                break;
               case RequestState.Loading:
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-                break;
               case RequestState.Error:
                 return Center(
                   child: Text(value.message),
                 );
-                break;
             }
           }
         ),
@@ -87,6 +84,7 @@ class DetailPageState extends State<DetailPage> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             'Description',
@@ -125,13 +123,25 @@ class DetailPageState extends State<DetailPage> {
               return _buildStepsItem(menu.steps[index], (index + 1));
             },
           ),
+          const SizedBox(height: 24.0),
+          Text(
+            'Reviews',
+            style: coofitTextTheme.bodyText1,
+          ),
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: menu.reviews.length,
+              itemBuilder: (context, index) {
+                return _buildReviewItem(menu.reviews[index]);
+              }
+          )
         ],
       ),
     );
   }
 
-  Widget _buildMenuSupport(MenuResponse menu) {
-    return SingleChildScrollView(
+  Widget _buildMenuSupport() {
+    return Center(
       child: Column(
         children: [
           VisibilityDetector(
@@ -154,16 +164,40 @@ class DetailPageState extends State<DetailPage> {
             ),
           ),
           const SizedBox(height: 32),
-          Text(
-            'Reviews',
-            style: coofitTextTheme.bodyText1,
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: menu.reviews.length,
-            itemBuilder: (context, index) {
-              return _buildReviewItem(menu.reviews[index]);
-            }
+          Consumer<FavoriteProvider>(
+            builder: (context, value, child) {
+              return MaterialButton(
+                child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: (value.isFavorite)
+                  ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(cupertinoIconFavorite, color: Colors.white),
+                    SizedBox(width: 16.0),
+                    Text('Remove From Favorite', style: TextStyle(color: Colors.white))
+                  ],
+                )
+                  : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(cupertinoIconNotFavorite, color: Colors.white),
+                    SizedBox(width: 16.0),
+                    Text('Add To Favorite', style: TextStyle(color: Colors.white))
+                  ],
+                ),
+              ),
+              onPressed: () {
+                final favoriteBody = FavoriteBody(menuId: widget.menuId);
+                if(value.isFavorite) {
+                  value.deleteFavorite(favoriteBody);
+                } else {
+                  value.addNewFavorites(favoriteBody);
+                }
+              },
+              color: primaryColor,
+              );
+            },
           )
         ],
       ),

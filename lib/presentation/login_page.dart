@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:coofit/common/state_enum.dart';
 import 'package:coofit/model/login/login_body.dart';
 import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/login_provider.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -26,14 +29,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   late TextEditingController _usernameController;
-  String _username = "";
-
   late TextEditingController _passwordController;
-  String _password = "";
-
   late SimpleFontelicoProgressDialog _dialog;
-  RequestState _widgetState = RequestState.Default;
-
 
   @override
   void initState() {
@@ -59,9 +56,7 @@ class _LoginPageState extends State<LoginPage> {
     return Consumer<LoginProvider>(
         builder: (context, data, child) {
           switch(data.state) {
-            case RequestState.Loading: {
-              _widgetState = data.state;
-            }
+            case RequestState.Loading:
             break;
             case RequestState.Default:
               return child!;
@@ -69,24 +64,24 @@ class _LoginPageState extends State<LoginPage> {
               return child!;
             case RequestState.Success:
               if (data.isExist) {
+                _dialog.hide();
                 SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-                  Navigator.pushReplacementNamed(context, HomePage.routeName);
+                  CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.success,
+                      text: 'Login Success!',
+                      confirmBtnText: 'Go to homepage',
+                      onConfirmBtnTap: () => Navigator.popAndPushNamed(context, HomePage.routeName),
+                  );
                 });
               } else {
                   SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
                     _dialog.hide();
-                    showAnimatedDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return ClassicGeneralDialogWidget(
-                            titleText: 'User Not Found',
-                            contentText: 'Please check your username and password again',
-                            onPositiveClick: () {
-                              Navigator.of(context).pop();
-                            },
-                          );
-                        }
+                    CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.error,
+                      text: 'Check your username or password',
+                      onConfirmBtnTap: () => Navigator.pop(context)
                     );
                   });
                 return child!;
@@ -170,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: linkStyle,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.popAndPushNamed(context, RegisterPage.routeName);
+                                Navigator.pushNamed(context, RegisterPage.routeName);
                               }
                         )
                       ]

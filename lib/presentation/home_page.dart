@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
+import 'favorite_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -47,7 +49,11 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.fastfood),
             padding: const EdgeInsets.symmetric(horizontal: 16.0)
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.favorite), padding: const EdgeInsets.symmetric(horizontal: 16.0)),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, FavoritePage.routeName);
+              },
+              icon: const Icon(Icons.favorite), padding: const EdgeInsets.symmetric(horizontal: 16.0)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
         ],
       ),

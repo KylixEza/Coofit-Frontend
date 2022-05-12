@@ -1,11 +1,16 @@
 import 'package:coofit/presentation/login_page.dart';
 import 'package:coofit/provider/register_provider.dart';
+import 'package:coofit/utils/constant.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 import '../common/state_enum.dart';
+import '../model/user/user_body.dart';
 import '../style/style.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -24,10 +29,12 @@ class _RegisterPageState extends State<RegisterPage> {
   late TextEditingController _emailController;
   late TextEditingController _addressController;
   late TextEditingController _phoneNumberController;
+  late SimpleFontelicoProgressDialog _dialog;
 
   @override
   void initState() {
     super.initState();
+    _dialog = SimpleFontelicoProgressDialog(context: context, barrierDimisable: false);
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _emailController = TextEditingController();
@@ -59,8 +66,23 @@ class _RegisterPageState extends State<RegisterPage> {
             case RequestState.Loading:
               break;
             case RequestState.Success:
+              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.success,
+                  text: 'Your account successfully created!'
+                );
+              });
               return child!;
             case RequestState.Error:
+              _dialog.hide();
+              SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+                CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.error,
+                    text: value.message
+                );
+              });
               return child!;
           }
           return child!;
@@ -132,7 +154,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 14),
                   GFButton(
                       onPressed: () {
-
+                        final userBody = UserBody(
+                          username: _usernameController.text,
+                          password: _passwordController.text,
+                          address: _addressController.text,
+                          avatar: defaultAvatarUrl,
+                          coofitWallet: 0,
+                          email: _emailController.text,
+                          phoneNumber: _phoneNumberController.text,
+                          xp: 0,
+                        );
+                        setState(() {
+                          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                            _dialog.show(message: 'wait a second');
+                          });
+                        });
+                        Provider.of<RegisterProvider>(context, listen: false)
+                          .addNewUser(userBody);
                       },
                       color: primaryColor,
                       fullWidthButton: true,

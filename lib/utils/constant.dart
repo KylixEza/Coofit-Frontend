@@ -1,0 +1,1 @@
+const defaultAvatarUrl = 'https://firebasestorage.googleapis.com/v0/b/cookiez-kinderjoey.appspot.com/o/AvatarPath%2F1634647700841.jpg?alt=media&token=3810d4f1-4e73-4ef9-9976-31b400a40240';
