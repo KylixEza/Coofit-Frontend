@@ -8,8 +8,8 @@ part of 'login_response.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      isExist: json['is_exist'] as bool,
-      uid: json['uid'] as String,
+      json['is_exist'] as bool,
+      json['uid'] as String? ?? '',
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>

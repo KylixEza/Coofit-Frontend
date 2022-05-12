@@ -5,13 +5,13 @@ part 'login_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class LoginResponse extends Equatable {
-  bool isExist = false;
-  String uid = '';
+  bool isExist;
+  String uid;
 
-  LoginResponse({
-    required this.isExist,
-    required this.uid,
-  });
+  LoginResponse(
+    this.isExist,
+    [this.uid = '']
+  );
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => _$LoginResponseFromJson(json);
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
