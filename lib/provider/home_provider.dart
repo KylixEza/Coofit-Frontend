@@ -59,9 +59,14 @@ class HomeProvider extends ChangeNotifier {
         notifyListeners();
       },
       (data) {
-        _menus = data;
-        _state = RequestState.Success;
-        notifyListeners();
+        if(data.isEmpty) {
+          _state = RequestState.Empty;
+          notifyListeners();
+        } else {
+          _menus = data;
+          _state = RequestState.Success;
+          notifyListeners();
+        }
       }
     );
   }

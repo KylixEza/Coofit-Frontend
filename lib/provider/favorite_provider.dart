@@ -57,11 +57,12 @@ class FavoriteProvider extends ChangeNotifier {
     final result = await repository.addNewFavorite(body);
 
     result.fold(
-            (failure) {
+        (failure) {
           _message = failure.message;
           notifyListeners();
         },
-            (data) {
+        (data) {
+          _state = RequestState.Success;
           _message = data;
           _isFavorite = true;
           notifyListeners();
@@ -75,11 +76,12 @@ class FavoriteProvider extends ChangeNotifier {
     final result = await repository.deleteFavorite(body);
 
     result.fold(
-            (failure) {
+        (failure) {
           _message = failure.message;
           notifyListeners();
         },
-            (data) {
+        (data) {
+          _state = RequestState.Success;
           _message = data;
           _isFavorite = false;
           notifyListeners();

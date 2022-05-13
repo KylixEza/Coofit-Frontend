@@ -7,6 +7,7 @@ import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/widgets/custom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'favorite_page.dart';
@@ -110,8 +111,8 @@ class _HomePageState extends State<HomePage> {
     return Consumer<HomeProvider>(
         builder: (context, value, child) {
           if (value.state == RequestState.Loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Lottie.asset('RedLoading.json', width: 200, height: 200),
             );
           } else if (value.state == RequestState.Success) {
             final List<MenuLiteResponse>? menus = value.menus;
@@ -139,7 +140,17 @@ class _HomePageState extends State<HomePage> {
           } else if (value.state == RequestState.Default) {
             return Container();
           } else if (value.state == RequestState.Empty) {
-            return Center(child: Text(value.message));
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('EmptyBox.json', width: 200, height: 200),
+                  const SizedBox(height: 32),
+                  const Text('We can\'t find what are you looking for')
+                ]
+              ),
+            );
           } else {
             return Container();
           }

@@ -177,7 +177,12 @@ class DetailPageState extends State<DetailPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: (value.state == RequestState.Loading)
-                            ? const CircularProgressIndicator()
+                            ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              CircularProgressIndicator(color: Colors.white)
+                            ],
+                            )
                             : (value.isFavorite)
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
