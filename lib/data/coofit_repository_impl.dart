@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:coofit/data/api_service.dart';
 import 'package:coofit/data/preference_helper.dart';
 import 'package:coofit/model/favorite/favorite_body.dart';
@@ -16,16 +14,18 @@ import '../common/failure.dart';
 
 abstract class CoofitRepository {
   Future<Either<Failure, String>> addNewUser(UserBody body);
+  Future<bool> isLogin();
   Future<Either<Failure, LoginResponse>> getLoginInformation(LoginBody body);
   void logout();
   Future<Either<Failure, UserResponse>> getUserDetail();
-  Future<Either<Failure, String>> updateUser(UserBody body);
+  Future<Either<Failure, UserResponse>> updateUser(UserBody body);
   Future<Either<Failure, String>> addNewFavorite(FavoriteBody body);
   Future<Either<Failure, String>> deleteFavorite(FavoriteBody body);
   Future<Either<Failure, List<MenuLiteResponse>>> getFavorites();
   Future<Either<Failure, List<MenuLiteResponse>>> getTopMenus();
   Future<Either<Failure, List<MenuLiteResponse>>> searchMenus(String query);
   Future<Either<Failure, MenuResponse>> getMenuDetail(String menuId);
+  Future<Either<Failure, String>> updateVisitCount(String menuId);
   Future<Either<Failure, PredictionResponse>> getCaloriesPrediction(String food);
 }
 
@@ -52,6 +52,11 @@ class CoofitRepositoryImpl extends CoofitRepository {
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
+  }
+
+  @override
+  Future<bool> isLogin() async {
+    return await preference.isLogin();
   }
 
   @override
@@ -96,13 +101,18 @@ class CoofitRepositoryImpl extends CoofitRepository {
   }
 
   @override
-  Future<Either<Failure, String>> updateUser(UserBody body) async {
+  Future<Either<Failure, UserResponse>> updateUser(UserBody body) async {
     try {
       final uid = await preference.getUid();
       final response = await apiService.updateUser(uid, body);
       if (response.status == "200")  {
-        final data = response.data;
-        return Right(data);
+        final data = await apiService.getUserDetail(uid);
+        final user = data.data;
+        if (response.status == "200") {
+          return Right(user);
+        } else {
+          throw ServerFailure(response.message);
+        }
       } else {
         throw ServerFailure(response.message);
       }
@@ -194,6 +204,21 @@ class CoofitRepositoryImpl extends CoofitRepository {
     try {
       final response = await apiService.getMenuDetail(menuId);
       if (response.status == "200") {
+        final data = response.data;
+        return Right(data);
+      } else {
+        throw ServerFailure(response.message);
+      }
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updateVisitCount(String menuId) async {
+    try {
+      final response = await apiService.updateVisitCount(menuId);
+      if(response.status == "200") {
         final data = response.data;
         return Right(data);
       } else {

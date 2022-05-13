@@ -49,6 +49,9 @@ abstract class ApiService {
   @GET("menu/{menuId}")
   Future<BaseResponse<MenuResponse>> getMenuDetail(@Path("menuId") String menuId);
 
+  @PUT("menu/{menuId}/visited")
+  Future<BaseResponse<String>> updateVisitCount(@Path("menuId") String menuId);
+
   @GET("menu/prediction")
   Future<BaseResponse<PredictionResponse>> getCaloriesPrediction(@Query("food") String food);
 }

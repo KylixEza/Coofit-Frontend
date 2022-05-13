@@ -20,6 +20,7 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> with RouteAware  {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +30,6 @@ class _FavoritePageState extends State<FavoritePage> with RouteAware  {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() {
       Provider.of<FavoriteProvider>(context, listen: false)

@@ -27,6 +27,8 @@ class DetailProvider extends ChangeNotifier {
     notifyListeners();
 
     final result = await repository.getMenuDetail(menuId);
+    await repository.updateVisitCount(menuId);
+
     result.fold(
         (failure) {
           _message = failure.message;

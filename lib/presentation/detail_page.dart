@@ -54,7 +54,7 @@ class DetailPageState extends State<DetailPage> {
                     Expanded(
                       child: _buildMenuDetail(value.menu),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 32),
                     Expanded(
                       child: _buildMenuSupport(),
                     )
@@ -141,67 +141,80 @@ class DetailPageState extends State<DetailPage> {
   }
 
   Widget _buildMenuSupport() {
-    return Center(
-      child: Column(
-        children: [
-          VisibilityDetector(
-            key: ObjectKey(flickManager),
-            onVisibilityChanged: (visibility) {
-              if (visibility.visibleFraction == 0 && mounted) {
-                flickManager.flickControlManager?.autoPause();
-              } else if (visibility.visibleFraction == 1) {
-                flickManager.flickControlManager?.autoResume();
-              }
-            },
-            child: FlickVideoPlayer(
-              flickManager: flickManager,
-              flickVideoWithControls: const FlickVideoWithControls(
-                controls: FlickPortraitControls(),
-              ),
-              flickVideoWithControlsFullscreen: const FlickVideoWithControls(
-                controls: FlickLandscapeControls(),
+      return Center(
+        child: Wrap(
+          children: [Card(
+            elevation: 8,
+            shadowColor: Colors.grey,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  VisibilityDetector(
+                    key: ObjectKey(flickManager),
+                    onVisibilityChanged: (visibility) {
+                      if (visibility.visibleFraction == 0 && mounted) {
+                        flickManager.flickControlManager?.autoPause();
+                      } else if (visibility.visibleFraction == 1) {
+                        flickManager.flickControlManager?.autoResume();
+                      }
+                    },
+                    child: FlickVideoPlayer(
+                      flickManager: flickManager,
+                      flickVideoWithControls: const FlickVideoWithControls(
+                        controls: FlickPortraitControls(),
+                      ),
+                      flickVideoWithControlsFullscreen: const FlickVideoWithControls(
+                        controls: FlickLandscapeControls(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Consumer<FavoriteProvider>(
+                    builder: (context, value, child) {
+                      return MaterialButton(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: (value.state == RequestState.Loading)
+                            ? const CircularProgressIndicator()
+                            : (value.isFavorite)
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(cupertinoIconFavorite, color: Colors.white),
+                                    SizedBox(width: 16.0),
+                                    Text('Remove From Favorite', style: TextStyle(color: Colors.white))
+                                  ],
+                             )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(cupertinoIconNotFavorite, color: Colors.white),
+                                    SizedBox(width: 16.0),
+                                    Text('Add To Favorite', style: TextStyle(color: Colors.white))
+                                 ],
+                            ),
+                        ),
+                      onPressed: () {
+                        final favoriteBody = FavoriteBody(menuId: widget.menuId);
+                        if(value.isFavorite) {
+                          value.deleteFavorite(favoriteBody);
+                        } else {
+                          value.addNewFavorites(favoriteBody);
+                        }
+                      },
+                      color: primaryColor,
+                      );
+                    },
+                  )
+                ],
               ),
             ),
           ),
-          const SizedBox(height: 32),
-          Consumer<FavoriteProvider>(
-            builder: (context, value, child) {
-              return MaterialButton(
-                child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: (value.isFavorite)
-                  ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(cupertinoIconFavorite, color: Colors.white),
-                    SizedBox(width: 16.0),
-                    Text('Remove From Favorite', style: TextStyle(color: Colors.white))
-                  ],
-                )
-                  : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(cupertinoIconNotFavorite, color: Colors.white),
-                    SizedBox(width: 16.0),
-                    Text('Add To Favorite', style: TextStyle(color: Colors.white))
-                  ],
-                ),
-              ),
-              onPressed: () {
-                final favoriteBody = FavoriteBody(menuId: widget.menuId);
-                if(value.isFavorite) {
-                  value.deleteFavorite(favoriteBody);
-                } else {
-                  value.addNewFavorites(favoriteBody);
-                }
-              },
-              color: primaryColor,
-              );
-            },
-          )
-        ],
-      ),
-    );
+        ]
+        ),
+      );
   }
 
   Widget _buildIngredientsItem(String ingredient) {

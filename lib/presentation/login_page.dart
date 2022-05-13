@@ -5,17 +5,18 @@ import 'package:coofit/model/login/login_body.dart';
 import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/login_provider.dart';
+import 'package:coofit/utils/validator.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:provider/provider.dart';
-import 'package:coofit/di/injection.dart' as di;
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 import '../style/style.dart';
+import '../utils/route_observer.dart';
+import '../utils/validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class LoginPage extends StatefulWidget {
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with RouteAware {
 
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
@@ -43,12 +44,22 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.symmetric(vertical: 32.0),
-          child: _buildLoginProcess(),
-        )
+    return Consumer<LoginProvider>(
+      builder: (context, value, child) {
+        if(value.isLogin) {
+          Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+        } else {
+          child!;
+        }
+        return child!;
+      },
+      child: Scaffold(
+          body: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(vertical: 32.0),
+              child: _buildLoginProcess(),
+            )
+        ),
     );
   }
 
@@ -71,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                       type: CoolAlertType.success,
                       text: 'Login Success!',
                       confirmBtnText: 'Go to homepage',
-                      onConfirmBtnTap: () => Navigator.popAndPushNamed(context, HomePage.routeName),
+                      onConfirmBtnTap: () => Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false)
                   );
                 });
               } else {
@@ -125,7 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextField(
+                TextFormField(
+                  obscureText: true,
                   controller: _passwordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -176,5 +188,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
         )
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }

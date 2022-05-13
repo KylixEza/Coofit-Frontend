@@ -222,6 +222,25 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<BaseResponse<String>> updateVisitCount(menuId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<String>>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'menu/${menuId}/visited',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse<String>.fromJson(
+      _result.data!,
+      (json) => json as String,
+    );
+    return value;
+  }
+
+  @override
   Future<BaseResponse<PredictionResponse>> getCaloriesPrediction(food) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'food': food};

@@ -20,7 +20,7 @@ final TextTheme coofitTextTheme = TextTheme(
   headline5: GoogleFonts.viga(
       fontSize: 23, fontWeight: FontWeight.w700, color: Colors.black),
   headline6: GoogleFonts.viga(
-      fontSize: 19, fontWeight: FontWeight.w500, letterSpacing: 0.15,  color: accentColor),
+      fontSize: 19, fontWeight: FontWeight.w500, letterSpacing: 0.15,  color: Colors.black),
   subtitle1: GoogleFonts.poppins(
       fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: 0.15),
   subtitle2: GoogleFonts.poppins(

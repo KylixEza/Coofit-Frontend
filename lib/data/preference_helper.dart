@@ -22,4 +22,13 @@ class PreferenceHelper {
     final prefs = await sharedPreference;
     prefs.remove(UID);
   }
+
+  Future<bool> isLogin() async {
+    final prefs = await sharedPreference;
+    if (prefs.getString(UID) == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

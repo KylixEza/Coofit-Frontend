@@ -17,6 +17,9 @@ class LoginProvider extends ChangeNotifier {
   bool _isExist = false;
   bool get isExist => _isExist;
 
+  bool _isLogin = false;
+  bool get isLogin => _isLogin;
+
   Future<void> login(LoginBody loginBody) async {
     _state = RequestState.Loading;
     notifyListeners();
@@ -41,5 +44,10 @@ class LoginProvider extends ChangeNotifier {
         notifyListeners();
       }
     );
+  }
+
+  Future<void> checkLoginStatus() async {
+    _isLogin = await repository.isLogin();
+    notifyListeners();
   }
 }

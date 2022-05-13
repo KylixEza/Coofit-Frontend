@@ -2,6 +2,7 @@ import 'package:coofit/common/state_enum.dart';
 import 'package:coofit/model/menu/menu_lite_response.dart';
 import 'package:coofit/presentation/detail_page.dart';
 import 'package:coofit/presentation/prediction_page.dart';
+import 'package:coofit/presentation/profile_page.dart';
 import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/widgets/custom_widget.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,11 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushNamed(context, FavoritePage.routeName);
               },
               icon: const Icon(Icons.favorite), padding: const EdgeInsets.symmetric(horizontal: 16.0)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, ProfilePage.route_name);
+              },
+              icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
         ],
       ),
       body: _buildPage(context)
@@ -93,10 +98,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: _buildList(context),
-                ),
+                child: _buildList(context)
               ),
             ],
           );

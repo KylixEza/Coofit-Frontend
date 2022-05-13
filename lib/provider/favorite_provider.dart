@@ -52,6 +52,8 @@ class FavoriteProvider extends ChangeNotifier {
   }
 
   void addNewFavorites(FavoriteBody body) async {
+    _state = RequestState.Loading;
+    notifyListeners();
     final result = await repository.addNewFavorite(body);
 
     result.fold(
@@ -68,6 +70,8 @@ class FavoriteProvider extends ChangeNotifier {
   }
 
   void deleteFavorite(FavoriteBody body) async {
+    _state = RequestState.Loading;
+    notifyListeners();
     final result = await repository.deleteFavorite(body);
 
     result.fold(

@@ -3,15 +3,18 @@ import 'package:coofit/presentation/favorite_page.dart';
 import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/login_page.dart';
 import 'package:coofit/presentation/prediction_page.dart';
+import 'package:coofit/presentation/profile_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/detail_provider.dart';
 import 'package:coofit/provider/favorite_provider.dart';
 import 'package:coofit/provider/home_provider.dart';
 import 'package:coofit/provider/login_provider.dart';
 import 'package:coofit/provider/prediction_provider.dart';
+import 'package:coofit/provider/profile_provider.dart';
 import 'package:coofit/provider/register_provider.dart';
 import 'package:coofit/style/style.dart';
 import 'package:coofit/utils/route_observer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:coofit/di/injection.dart' as di;
 import 'package:provider/provider.dart';
@@ -34,7 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.locator<DetailProvider>()),
         ChangeNotifierProvider(create: (_) => di.locator<PredictionProvider>()),
         ChangeNotifierProvider(create: (_) => di.locator<RegisterProvider>()),
-        ChangeNotifierProvider(create: (_) => di.locator<FavoriteProvider>())
+        ChangeNotifierProvider(create: (_) => di.locator<FavoriteProvider>()),
+        ChangeNotifierProvider(create: (_) => di.locator<ProfileProvider>()),
       ],
       child: MaterialApp(
         title: 'Coofit',
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           switch(settings.name) {
             case HomePage.routeName:
-              return MaterialPageRoute(builder: (_) => const HomePage(), settings: settings);
+              return CupertinoPageRoute(builder: (_) => const HomePage(), settings: settings);
             case LoginPage.routeName:
               return MaterialPageRoute(builder: (_) => const LoginPage(), settings: settings);
             case RegisterPage.routeName:
@@ -62,6 +66,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const PredictionPage(), settings: settings);
             case FavoritePage.routeName:
               return MaterialPageRoute(builder: (_) => const FavoritePage(), settings: settings);
+            case ProfilePage.route_name:
+              return MaterialPageRoute(builder: (_) => const ProfilePage(), settings: settings);
             default:
               return MaterialPageRoute(builder: (_) {
                 return const Scaffold(
