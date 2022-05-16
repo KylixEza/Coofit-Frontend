@@ -43,7 +43,6 @@ class _PredictionPageState extends State<PredictionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNavBar(context, 'Prediction'),
-      bottomNavigationBar: buildCoofitFooter(),
       body: _buildPage(),
     );
   }

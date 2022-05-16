@@ -1,21 +1,13 @@
 import 'package:coofit/common/state_enum.dart';
 import 'package:coofit/model/menu/menu_lite_response.dart';
 import 'package:coofit/presentation/detail_page.dart';
-import 'package:coofit/presentation/prediction_page.dart';
-import 'package:coofit/presentation/profile_page.dart';
 import 'package:coofit/provider/home_provider.dart';
-import 'package:coofit/style/style.dart';
 import 'package:coofit/widgets/custom_widget.dart';
-import 'package:coofit/widgets/footer.dart';
 import 'package:coofit/widgets/navbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:footer/footer_view.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
-import 'favorite_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,8 +25,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _controller = TextEditingController();
     super.initState();
+    _controller = TextEditingController();
+    Future.microtask(() => Provider.of<HomeProvider>(context, listen: false).getTopMenus());
   }
 
   @override
@@ -65,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   controller: _controller,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: 'Find your favorite restaurant or menu',
+                    labelText: 'Find some menu in here',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -128,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Lottie.asset('EmptyBox.json', width: 200, height: 200),
+                  Lottie.asset('SearchEmpty.json', width: 200, height: 200),
                   const SizedBox(height: 32),
                   const Text('We can\'t find what are you looking for')
                 ]

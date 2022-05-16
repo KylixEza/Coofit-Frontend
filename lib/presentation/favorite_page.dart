@@ -27,7 +27,6 @@ class _FavoritePageState extends State<FavoritePage> with RouteAware  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildNavBar(context, 'Favorite'),
-      bottomNavigationBar: buildCoofitFooter(),
       body: _buildPage(context),
     );
   }

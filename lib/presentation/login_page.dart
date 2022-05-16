@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
         return child!;
       },
       child: Scaffold(
-        bottomNavigationBar: buildCoofitFooter(),
         body: Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.symmetric(vertical: 32.0),

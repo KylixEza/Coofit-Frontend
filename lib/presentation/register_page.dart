@@ -57,7 +57,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: buildCoofitFooter(),
       body: Consumer<RegisterProvider>(
         builder: (context, value, child) {
           switch(value.state) {
