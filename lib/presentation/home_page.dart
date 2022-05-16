@@ -102,11 +102,10 @@ class _HomePageState extends State<HomePage> {
             final List<MenuLiteResponse>? menus = value.menus;
             return Padding(
               padding: const EdgeInsets.symmetric(
-                  vertical: 36,
                   horizontal:18
               ),
               child: MasonryGridView.count(
-                crossAxisCount: 4,
+                crossAxisCount: 6,
                 mainAxisSpacing: 4,
                 crossAxisSpacing: 12,
                 itemCount: menus?.length,
