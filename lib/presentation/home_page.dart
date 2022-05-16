@@ -4,9 +4,14 @@ import 'package:coofit/presentation/detail_page.dart';
 import 'package:coofit/presentation/prediction_page.dart';
 import 'package:coofit/presentation/profile_page.dart';
 import 'package:coofit/provider/home_provider.dart';
+import 'package:coofit/style/style.dart';
 import 'package:coofit/widgets/custom_widget.dart';
+import 'package:coofit/widgets/footer.dart';
+import 'package:coofit/widgets/navbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:footer/footer_view.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -41,29 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Coofit"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, PredictionPage.routeName);
-            },
-            icon: const Icon(Icons.fastfood),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0)
-          ),
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, FavoritePage.routeName);
-              },
-              icon: const Icon(Icons.favorite), padding: const EdgeInsets.symmetric(horizontal: 16.0)),
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, ProfilePage.route_name);
-              },
-              icon: const Icon(Icons.person), padding: const EdgeInsets.symmetric(horizontal: 16.0))
-        ],
-      ),
-      body: _buildPage(context)
+      appBar: buildNavBar(context, 'Home'),
+      body: _buildPage(context),
     );
   }
 
@@ -75,7 +59,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin: const EdgeInsets.symmetric(
                     horizontal: 18,
-                    vertical: 24
+                    vertical: 12
                 ),
                 child: TextField(
                   controller: _controller,
@@ -123,8 +107,8 @@ class _HomePageState extends State<HomePage> {
               ),
               child: MasonryGridView.count(
                 crossAxisCount: 4,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 16,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 12,
                 itemCount: menus?.length,
                 itemBuilder: (context, index) {
                   return _buildListItem(context,menus!.elementAt(index));

@@ -1,6 +1,7 @@
+import 'package:coofit/presentation/login_page.dart';
 import 'package:coofit/provider/profile_provider.dart';
 import 'package:coofit/style/style.dart';
-import 'package:flutter/gestures.dart';
+import 'package:coofit/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildNavBar(context, 'Profile'),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         child: _buildPage(context)
@@ -136,6 +138,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
+          GFButton(
+            onPressed: () {
+              Provider.of<ProfileProvider>(context, listen: false)
+                  .logout();
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false);
+              });
+            },
+            color: primaryColor,
+            fullWidthButton: true,
+            text: "Logout",
+              textStyle: coofitTextTheme.headline5?.merge(
+                  const TextStyle(color: Colors.white)
+              )
+          )
         ],
       ),
     );

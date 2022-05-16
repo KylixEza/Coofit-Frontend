@@ -58,4 +58,8 @@ class ProfileProvider extends ChangeNotifier {
       }
     );
   }
+
+  void logout() {
+    repository.logout();
+  }
 }

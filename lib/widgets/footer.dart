@@ -1,14 +1,21 @@
-import 'package:flutter/cupertino.dart';
-import 'package:footer/footer.dart';
+import 'package:flutter/material.dart';
+import '../style/style.dart';
 
-Footer buildCoofitFooter() {
-  return Footer(
-    child: Column(
-      children: const [
-        Text('Copyright ©2022, All Rights Reserved.'),
-        SizedBox(height: 4),
-        Text('Made by Kylix, Samuel, and Foresta with Flutter and Ktor')
-      ],
+BottomAppBar buildCoofitFooter() {
+  return BottomAppBar(
+    child: Container(
+      height: 80,
+      color: accentColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Copyright 2022 Kylix, Samuel, and Foresta. All rights reserved.", style: coofitTextTheme.caption),
+          ],
+        ),
+      ),
     ),
   );
 }

@@ -5,6 +5,7 @@ import 'package:coofit/model/review/review_response.dart';
 import 'package:coofit/provider/detail_provider.dart';
 import 'package:coofit/provider/favorite_provider.dart';
 import 'package:coofit/style/style.dart';
+import 'package:coofit/widgets/footer.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,7 @@ class DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: buildCoofitFooter(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         child: Consumer<DetailProvider>(

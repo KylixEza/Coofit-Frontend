@@ -6,6 +6,7 @@ import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/login_provider.dart';
 import 'package:coofit/utils/validator.dart';
+import 'package:coofit/widgets/footer.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -54,12 +55,13 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
         return child!;
       },
       child: Scaffold(
-          body: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(vertical: 32.0),
-              child: _buildLoginProcess(),
-            )
-        ),
+        bottomNavigationBar: buildCoofitFooter(),
+        body: Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(vertical: 32.0),
+          child: _buildLoginProcess(),
+        )
+      ),
     );
   }
 
@@ -75,15 +77,9 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
               return child!;
             case RequestState.Success:
               if (data.isExist) {
-                _dialog.hide();
-                SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-                  CoolAlert.show(
-                      context: context,
-                      type: CoolAlertType.success,
-                      text: 'Login Success!',
-                      confirmBtnText: 'Go to homepage',
-                      onConfirmBtnTap: () => Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false)
-                  );
+                Future.delayed(Duration.zero, () async {
+                  _dialog.hide();
+                  Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
                 });
               } else {
                   SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -152,10 +148,8 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
                           password: _passwordController.text
                       );
                       print(loginBody);
-                      setState(() {
-                        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                          _dialog.show(message: 'wait a second');
-                        });
+                      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                        _dialog.show(message: 'wait a second');
                       });
                       Provider.of<LoginProvider>(context, listen: false).login(loginBody);
                     },
@@ -193,6 +187,8 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
   @override
   void dispose() {
     // TODO: implement dispose
+    _passwordController.dispose();
+    _usernameController.dispose();
     routeObserver.unsubscribe(this);
     super.dispose();
   }

@@ -1,5 +1,7 @@
 import 'package:coofit/common/state_enum.dart';
 import 'package:coofit/provider/prediction_provider.dart';
+import 'package:coofit/widgets/footer.dart';
+import 'package:coofit/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -40,7 +42,9 @@ class _PredictionPageState extends State<PredictionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildPage()
+      appBar: buildNavBar(context, 'Prediction'),
+      bottomNavigationBar: buildCoofitFooter(),
+      body: _buildPage(),
     );
   }
 

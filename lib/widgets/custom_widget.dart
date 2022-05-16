@@ -68,7 +68,7 @@ class MenuLiteResponseListWidget extends StatelessWidget {
                           width: 2.0,
                         ),
                         Text(
-                            menu.rating.toString()
+                            "${menu.rating ?? 0}"
                         )
                       ],
                     ),

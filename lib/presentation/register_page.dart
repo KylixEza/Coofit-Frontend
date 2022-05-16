@@ -1,6 +1,7 @@
 import 'package:coofit/presentation/login_page.dart';
 import 'package:coofit/provider/register_provider.dart';
 import 'package:coofit/utils/constant.dart';
+import 'package:coofit/widgets/footer.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: buildCoofitFooter(),
       body: Consumer<RegisterProvider>(
         builder: (context, value, child) {
           switch(value.state) {
