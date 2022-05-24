@@ -27,7 +27,7 @@ class _ApiService implements ApiService {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BaseResponse<String>>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'user',
+                .compose(_dio.options, 'user/register',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BaseResponse<String>.fromJson(
@@ -154,6 +154,25 @@ class _ApiService implements ApiService {
           .map<MenuLiteResponse>(
               (i) => MenuLiteResponse.fromJson(i as Map<String, dynamic>))
           .toList(),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<bool>> isFavorite(uid, menuId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<bool>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'user/${uid}/favorite/${menuId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse<bool>.fromJson(
+      _result.data!,
+      (json) => json as bool,
     );
     return value;
   }

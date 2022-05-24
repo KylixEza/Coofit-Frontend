@@ -51,6 +51,20 @@ class FavoriteProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> favoriteValidator(String menuId) async {
+    final result = await repository.isFavorite(menuId);
+    result.fold(
+      (failure) {
+
+      },
+      (data) {
+        _isFavorite = data;
+        _state = RequestState.Success;
+        notifyListeners();
+      }
+    );
+  }
+
   void addNewFavorites(FavoriteBody body) async {
     _state = RequestState.Loading;
     notifyListeners();

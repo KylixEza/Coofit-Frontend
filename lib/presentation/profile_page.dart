@@ -4,6 +4,7 @@ import 'package:coofit/style/style.dart';
 import 'package:coofit/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
@@ -74,7 +75,9 @@ class _ProfilePageState extends State<ProfilePage> {
           case RequestState.Empty:
             return _buildProfile(value.user);
           case RequestState.Loading:
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Lottie.asset('RedLoading.json', width: 200, height: 200),
+            );
           case RequestState.Success: {
             _dialog.hide();
             return Row(

@@ -22,6 +22,7 @@ abstract class CoofitRepository {
   Future<Either<Failure, String>> addNewFavorite(FavoriteBody body);
   Future<Either<Failure, String>> deleteFavorite(FavoriteBody body);
   Future<Either<Failure, List<MenuLiteResponse>>> getFavorites();
+  Future<Either<Failure, bool>> isFavorite(String menuId);
   Future<Either<Failure, List<MenuLiteResponse>>> getTopMenus();
   Future<Either<Failure, List<MenuLiteResponse>>> searchMenus(String query);
   Future<Either<Failure, MenuResponse>> getMenuDetail(String menuId);
@@ -160,6 +161,22 @@ class CoofitRepositoryImpl extends CoofitRepository {
       final response = await apiService.getFavorites(uid);
       if (response.status == "200") {
         final data = response.data;
+        return Right(data);
+      } else {
+        throw ServerFailure(response.message);
+      }
+    } catch(e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> isFavorite(String menuId) async {
+    try {
+      final uid = await preference.getUid();
+      final response = await apiService.isFavorite(uid, menuId);
+      if(response.status == "200") {
+        final data  = response.data;
         return Right(data);
       } else {
         throw ServerFailure(response.message);

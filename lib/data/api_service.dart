@@ -18,7 +18,7 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
-  @POST("user")
+  @POST("user/register")
   Future<BaseResponse<String>> addNewUser(@Body() UserBody body);
 
   @POST("user/login")
@@ -39,6 +39,9 @@ abstract class ApiService {
 
   @GET("user/{uid}/favorite")
   Future<BaseListResponse<List<MenuLiteResponse>>> getFavorites(@Path("uid") String uid);
+
+  @GET("user/{uid}/favorite/{menuId}")
+  Future<BaseResponse<bool>> isFavorite(@Path("uid") String uid, @Path("menuId") String menuId);
 
   @GET("menu/top")
   Future<BaseListResponse<List<MenuLiteResponse>>> getTopMenus();

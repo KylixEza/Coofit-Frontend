@@ -98,9 +98,9 @@ class _HomePageState extends State<HomePage> {
                   horizontal:18
               ),
               child: MasonryGridView.count(
-                crossAxisCount: 6,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 12,
+                crossAxisCount: 5,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 16,
                 itemCount: menus?.length,
                 itemBuilder: (context, index) {
                   return _buildListItem(context,menus!.elementAt(index));

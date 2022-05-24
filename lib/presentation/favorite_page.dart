@@ -1,8 +1,8 @@
 import 'package:coofit/provider/favorite_provider.dart';
-import 'package:coofit/widgets/footer.dart';
 import 'package:coofit/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../common/state_enum.dart';
@@ -56,8 +56,8 @@ class _FavoritePageState extends State<FavoritePage> with RouteAware  {
     return Consumer<FavoriteProvider>(
       builder: (context, value, child) {
         if (value.state == RequestState.Loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: Lottie.asset('RedLoading.json', width: 200, height: 200),
           );
         } else if (value.state == RequestState.Success) {
           final List<MenuLiteResponse>? menus = value.menus;
@@ -67,7 +67,7 @@ class _FavoritePageState extends State<FavoritePage> with RouteAware  {
                 horizontal:18
             ),
             child: MasonryGridView.count(
-              crossAxisCount: 4,
+              crossAxisCount: 5,
               mainAxisSpacing: 12,
               crossAxisSpacing: 16,
               itemCount: menus?.length,
@@ -85,7 +85,17 @@ class _FavoritePageState extends State<FavoritePage> with RouteAware  {
         } else if (value.state == RequestState.Default) {
           return Container();
         } else if (value.state == RequestState.Empty) {
-          return Center(child: Text(value.message));
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('EmptyBox.json'),
+                const SizedBox(height: 32),
+                Text(value.message)
+              ],
+            ),
+          );
         } else {
           return Container();
         }

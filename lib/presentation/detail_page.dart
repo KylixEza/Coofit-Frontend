@@ -33,13 +33,14 @@ class DetailPageState extends State<DetailPage> {
     Future.microtask(() {
       Provider.of<DetailProvider>(context, listen: false)
           .getMenuDetail(widget.menuId);
+      Provider.of<FavoriteProvider>(context, listen: false)
+          .favoriteValidator(widget.menuId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: buildCoofitFooter(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         child: Consumer<DetailProvider>(
@@ -94,7 +95,7 @@ class DetailPageState extends State<DetailPage> {
           ),
           const SizedBox(height: 4.0),
           Text(
-            "${menu.description} \n Kalori yang dihasilkan oleh ${menu.title} adalah sekitar ${menu.calories} kal",
+            "${menu.description} \nKalori yang dihasilkan oleh ${menu.title} adalah sekitar ${menu.calories} kal",
             style: coofitTextTheme.subtitle2,
           ),
           const SizedBox(height: 24.0),
@@ -186,22 +187,26 @@ class DetailPageState extends State<DetailPage> {
                             ],
                             )
                             : (value.isFavorite)
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(cupertinoIconFavorite, color: Colors.white),
-                                    SizedBox(width: 16.0),
-                                    Text('Remove From Favorite', style: TextStyle(color: Colors.white))
-                                  ],
-                             )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(cupertinoIconNotFavorite, color: Colors.white),
-                                    SizedBox(width: 16.0),
-                                    Text('Add To Favorite', style: TextStyle(color: Colors.white))
-                                 ],
+                              ? Expanded(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(cupertinoIconFavorite, color: Colors.white),
+                                      SizedBox(width: 16.0),
+                                      Text('Remove From Favorite', style: TextStyle(color: Colors.white))
+                                    ],
+                             ),
+                              )
+                              : Expanded(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(cupertinoIconNotFavorite, color: Colors.white),
+                                      SizedBox(width: 16.0),
+                                      Text('Add To Favorite', style: TextStyle(color: Colors.white))
+                                   ],
                             ),
+                              ),
                         ),
                       onPressed: () {
                         final favoriteBody = FavoriteBody(menuId: widget.menuId);
@@ -225,31 +230,39 @@ class DetailPageState extends State<DetailPage> {
   }
 
   Widget _buildIngredientsItem(String ingredient) {
-    return Row(
-      children: [
-        const Icon(Icons.circle, color: primaryColor),
-        const SizedBox(width: 8.0),
-        Text(
-          ingredient,
-          style: coofitTextTheme.subtitle2,
-        )
-      ],
+    return Flexible(
+      child: Row(
+        children: [
+          const Icon(Icons.circle, color: primaryColor),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              ingredient,
+              style: coofitTextTheme.subtitle2,
+            ),
+          )
+        ],
+      ),
     );
   }
 
   Widget _buildStepsItem(String step, int position) {
-    return Row(
-      children: [
-        Text(
-          "$position.",
-          style: coofitTextTheme.subtitle2,
-        ),
-        const SizedBox(width: 8.0),
-        Text(
-          step,
-          style: coofitTextTheme.subtitle2,
-        )
-      ],
+    return Flexible(
+      child: Row(
+        children: [
+          Text(
+            "$position.",
+            style: coofitTextTheme.subtitle2,
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              step,
+              style: coofitTextTheme.subtitle2,
+            ),
+          )
+        ],
+      ),
     );
   }
 

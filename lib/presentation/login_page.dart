@@ -5,8 +5,6 @@ import 'package:coofit/model/login/login_body.dart';
 import 'package:coofit/presentation/home_page.dart';
 import 'package:coofit/presentation/register_page.dart';
 import 'package:coofit/provider/login_provider.dart';
-import 'package:coofit/utils/validator.dart';
-import 'package:coofit/widgets/footer.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 import '../style/style.dart';
-import '../utils/route_observer.dart';
-import '../utils/validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -69,6 +65,9 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
         builder: (context, data, child) {
           switch(data.state) {
             case RequestState.Loading:
+              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                _dialog.show(message: 'wait a second');
+              });
             break;
             case RequestState.Default:
               return child!;
@@ -76,9 +75,15 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
               return child!;
             case RequestState.Success:
               if (data.isExist) {
-                Future.delayed(Duration.zero, () async {
+                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                   _dialog.hide();
-                  Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+                  CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    text: 'Welcome to Coofit',
+                    onConfirmBtnTap: () => Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false),
+                    confirmBtnText: 'Go To Homepage'
+                  );
                 });
               } else {
                   SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -147,9 +152,6 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
                           password: _passwordController.text
                       );
                       print(loginBody);
-                      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                        _dialog.show(message: 'wait a second');
-                      });
                       Provider.of<LoginProvider>(context, listen: false).login(loginBody);
                     },
                     color: primaryColor,
@@ -185,10 +187,8 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _passwordController.dispose();
     _usernameController.dispose();
-    routeObserver.unsubscribe(this);
     super.dispose();
   }
 }
