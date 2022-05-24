@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
         builder: (context, data, child) {
           switch(data.state) {
             case RequestState.Loading:
-              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+              Future.delayed(const Duration(seconds: 1), () {
                 _dialog.show(message: 'wait a second');
               });
             break;
@@ -74,28 +74,33 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
             case RequestState.Empty:
               return child!;
             case RequestState.Success:
-              if (data.isExist) {
-                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                  _dialog.hide();
-                  CoolAlert.show(
-                    context: context,
-                    type: CoolAlertType.success,
-                    text: 'Welcome to Coofit',
-                    onConfirmBtnTap: () => Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false),
-                    confirmBtnText: 'Go To Homepage'
-                  );
-                });
-              } else {
-                  SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+              if(data.isExist != null) {
+                if (data.isExist!) {
+                  Future.delayed(const Duration(seconds: 1), () {
                     _dialog.hide();
                     CoolAlert.show(
-                      context: context,
-                      type: CoolAlertType.error,
-                      text: 'Check your username or password',
-                      onConfirmBtnTap: () => Navigator.pop(context)
+                        context: context,
+                        type: CoolAlertType.success,
+                        text: 'Welcome to Coofit',
+                        onConfirmBtnTap: () => {
+                          Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false),
+                          data.resetLogin()
+                        },
+                        confirmBtnText: 'Go To Homepage'
                     );
                   });
-                return child!;
+                } else {
+                  Future.delayed(const Duration(seconds: 1), () {
+                    _dialog.hide();
+                    CoolAlert.show(
+                        context: context,
+                        type: CoolAlertType.error,
+                        text: 'Check your username or password',
+                        onConfirmBtnTap: () => Navigator.pop(context)
+                    );
+                  });
+                  return child!;
+                }
               }
               break;
             case RequestState.Error:

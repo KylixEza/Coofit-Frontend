@@ -14,8 +14,8 @@ class LoginProvider extends ChangeNotifier {
   String _message = '';
   String get message => _message;
 
-  bool _isExist = false;
-  bool get isExist => _isExist;
+  bool? _isExist = false;
+  bool? get isExist => _isExist;
 
   bool _isLogin = false;
   bool get isLogin => _isLogin;
@@ -49,5 +49,9 @@ class LoginProvider extends ChangeNotifier {
   Future<void> checkLoginStatus() async {
     _isLogin = await repository.isLogin();
     notifyListeners();
+  }
+
+  Future<void> resetLogin() async {
+    _isExist = null;
   }
 }
